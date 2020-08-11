@@ -36,7 +36,7 @@ def jpeg_exporter(sourceImage, compressionSteps, outputPrefix, exportPath):
         print("Converting image to DCT-JPEG: " +
               str(counter+1) + " / " + str(compressionSteps+1))
 
-        imagename=exportPath + "/" + outputPrefix + str(counter) + ".jpg"
+        imagename=exportPath + "/" + outputPrefix + "_JPG_" + str(counter) + ".jpg"
 
         print("Current JPG Quality:" + str(quality))
         sourceImage.save(imagename, "JPEG", optimize = True, quality = quality)
@@ -61,7 +61,7 @@ def j2k_exporter(sourceImage, compressionSteps, outputPrefix, exportPath):
               str(counter+1) + " / " + str(compressionSteps+1))
         quality=[compressionRatio]
 
-        imagename=exportPath + "/" + outputPrefix + str(counter) + ".j2k"
+        imagename=exportPath + "/" + outputPrefix + "_J2K_" + str(counter) + ".j2k"
         # this converts png image as jpeg
         sourceImage.save(imagename, "JPEG2000",
                          quality_mode = "rates", quality_layers = quality)
@@ -77,7 +77,7 @@ def j2k_exporter(sourceImage, compressionSteps, outputPrefix, exportPath):
 ###########################################################
 # FUNKTION C: Konvertiert J2K Dateien in TGA
 def tga_converter(tgaSource, counter, outputPrefix, exportPath):
-    tgaName=exportPath + "/" + outputPrefix + str(counter) + ".tga"
+    tgaName=exportPath + "/" + outputPrefix + "_J2K_TGA_" + str(counter) + ".tga"
     tgaPath=tgaName
     tgaSource.save(tgaPath, "TGA")  # this converts png image as jpeg
 # ----- ENDE FUNKTION C ////
