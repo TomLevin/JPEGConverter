@@ -1,6 +1,6 @@
 ###########################################################
 # JPEG-Converter von Tom Levin Schwenzle
-# Konvertiert Bilddateien in JPEG2000 oder regulaeres JPEG
+# Konvertiert Bilddateien in JPEG2000(OpenJPEG) oder regulaeres JPEG(LibJPEG)
 # Mit abgestufter Kompression
 
 # Programmiert als Teil der Hausarbeit fuer die Vorlesung:
@@ -34,7 +34,7 @@ outputSelected = False
 
 # GUI Initialisierung:
 window = Tk()
-window.title("Image Converter: JPEG2000 & JPEG-DCT")
+window.title("Image Converter: J2K & JPG")
 
 
 # GUI Styling
@@ -104,7 +104,7 @@ def btnSourceFileClicked():
 
     else:
         messagebox.showinfo(
-            'Error', 'Error while loading image. Check selected file.')
+            'Error', 'Fehler beim Laden des Bildes. Prüfe die Bilddatei.')
 
 
 # Label fuer Quelldatei
@@ -118,7 +118,7 @@ txtChosenFile.grid(column=1, row=0, rowspan=2, pady=5)
 txtChosenFile.configure(state=DISABLED)
 
 # Button fuer Quelldatei
-btnSourceFile = Button(frameTopFrame, text="Open",
+btnSourceFile = Button(frameTopFrame, text="Quelle",
                        command=btnSourceFileClicked, width=10)
 btnSourceFile.grid(column=2, row=0, sticky=W, padx=8)
 
@@ -142,7 +142,7 @@ def btnOutputFolderClicked():
 
 
 # Label fuer Output Ordner
-lblOutputFolder = Label(frameTopFrame, text="Ausgabeverzeichnis:")
+lblOutputFolder = Label(frameTopFrame, text="Zielverzeichnis:")
 lblOutputFolder.grid(column=0, row=2, sticky=E, padx=8)
 # Kontrollfeld fuer Output Ordner
 txtOutputFolder = Text(frameTopFrame, height=3, width=35)
@@ -150,7 +150,7 @@ txtOutputFolder.insert(INSERT, "Noch kein Ziel ausgewählt.")
 txtOutputFolder.grid(column=1, row=2, rowspan=2, pady=5)
 txtOutputFolder.configure(state=DISABLED)
 # Button fuer Output Ordner
-btnOutputFolder = Button(frameTopFrame, text="Save to",
+btnOutputFolder = Button(frameTopFrame, text="Ziel",
                          command=btnOutputFolderClicked, width=10)
 btnOutputFolder.grid(column=2, row=2, sticky=W, padx=8)
 
@@ -177,15 +177,15 @@ frameChecker.grid(column=0, row=2)
 chkShouldJ2k_state = BooleanVar()
 chkShouldJ2k_state.set(True)
 chkShouldJ2k = Checkbutton(
-    frameChecker, text="Convert to JPEG2000", var=chkShouldJ2k_state)
+    frameChecker, text="Konvertieren in .J2K (JPEG2000)", var=chkShouldJ2k_state)
 chkShouldJ2k.grid(column=0, row=0)
 
-# JPEG DCT Checker
+# JPEG Checker
 shouldJPEG = False
-chkShoulJPEG_state = BooleanVar()
-chkShoulJPEG_state.set(True)
+chkShouldJPEG_state = BooleanVar()
+chkShouldJPEG_state.set(True)
 chkShoulJPEG = Checkbutton(
-    frameChecker, text="Convert to JPEG DCT", var=chkShoulJPEG_state)
+    frameChecker, text="Konvertieren in .JPG", var=chkShouldJPEG_state)
 chkShoulJPEG.grid(column=0, row=1)
 
 #####################################################
@@ -213,7 +213,7 @@ frameProgress.grid(column=0, row=4)
 # Progress Bar
 varProgress = IntVar()
 varProgressLabel = StringVar()
-varProgressLabel.set("Status: Wait")
+varProgressLabel.set("Status: Wartet")
 bar = Progressbar(frameProgress, length=200, variable=varProgress)
 bar.grid(column=0, row=0)
 lblProgress = Label(frameProgress, textvariable=varProgressLabel)
@@ -236,16 +236,16 @@ def btnRunConversionClicked():
         img = PIL.Image.open(filePath)
         prefix = txtPrefix.get()
         varProgress.set(50)
-        varProgressLabel.set("Status: Running")
+        varProgressLabel.set("Status: Läuft...")
         window.update()
         converter.runConversion(chkShouldJ2k_state.get(
-        ), chkShoulJPEG_state.get(), img, outputPath, compAmount.get(), prefix)
+        ), chkShouldJPEG_state.get(), img, outputPath, compAmount.get(), prefix)
         varProgress.set(100)
-        varProgressLabel.set("Status: Done!")
-        messagebox.showinfo('Conversion Status', 'Konvertierung und Kompression erfolgreich!')
+        varProgressLabel.set("Status: Fertig!")
+        messagebox.showinfo('Status', 'Konvertierung und Kompression erfolgreich!')
 
 
-btnRunConversion = Button(window, text="Start Conversion",
+btnRunConversion = Button(window, width=10, text="Start",
                           command=btnRunConversionClicked).grid(padx=15, pady=15)
 
 #####################################################

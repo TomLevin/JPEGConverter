@@ -11,7 +11,7 @@ import os
 
 def runConversion(shouldJ2k, shouldJPEG, img, outputPath, compAmount, prefix):
 
-    # Prueft Conversion in JPEG2000 und fuehrt aus
+    # Prueft Conversion in .J2K und fuehrt aus
     if shouldJ2k == True:
         startConversion = j2k_exporter(img, compAmount, prefix, outputPath)
     else:
@@ -19,7 +19,7 @@ def runConversion(shouldJ2k, shouldJPEG, img, outputPath, compAmount, prefix):
 
     # Prueft Conversion in .JPG und fuehrt aus
     if shouldJPEG == True:
-        startConversion = dctjpeg_exporter(img, compAmount, prefix, outputPath)
+        startConversion = jpeg_exporter(img, compAmount, prefix, outputPath)
     else:
         print("Skipping JPEG DCT Conversion")
 
@@ -27,7 +27,7 @@ def runConversion(shouldJ2k, shouldJPEG, img, outputPath, compAmount, prefix):
 ###########################################################
 # FUNKTION A: Konvertiert in JPEG-DCT und komprimiert
 
-def dctjpeg_exporter(sourceImage, compressionSteps, outputPrefix, exportPath):
+def jpeg_exporter(sourceImage, compressionSteps, outputPrefix, exportPath):
 
     # Startet die Conversion in J2K und exportiert unkomprimiert und entpsprechend der Compressionsschritte
     counter = 1
@@ -36,13 +36,13 @@ def dctjpeg_exporter(sourceImage, compressionSteps, outputPrefix, exportPath):
         print("Converting image to DCT-JPEG: " +
               str(counter+1) + " / " + str(compressionSteps+1))
 
-        imagename = exportPath + "/" + outputPrefix + str(counter) + ".jpg"
+        imagename=exportPath + "/" + outputPrefix + str(counter) + ".jpg"
 
         print("Current JPG Quality:" + str(quality))
-        sourceImage.save(imagename, "JPEG", optimize=True, quality=quality)
+        sourceImage.save(imagename, "JPEG", optimize = True, quality = quality)
 
         if quality > 0:
-            quality = getNextQuality(sourceImage, imagename, quality, counter)
+            quality=getNextQuality(sourceImage, imagename, quality, counter)
 
         counter += 1
 
@@ -54,20 +54,19 @@ def dctjpeg_exporter(sourceImage, compressionSteps, outputPrefix, exportPath):
 def j2k_exporter(sourceImage, compressionSteps, outputPrefix, exportPath):
 
     # Startet die Conversion in J2K und exportiert unkomprimiert und entpsprechend der Compressionsschritte
-    counter = 1
-    compressionRatio = 4
+    counter=1
+    compressionRatio=4
     while (counter <= compressionSteps):
         print("Converting image to JPEG2000: " +
               str(counter+1) + " / " + str(compressionSteps+1))
-        quality = [compressionRatio]
+        quality=[compressionRatio]
 
-        imagename = exportPath + "/" + \
-            outputPrefix + str(counter) + ".j2k"
+        imagename=exportPath + "/" + outputPrefix + str(counter) + ".j2k"
         # this converts png image as jpeg
         sourceImage.save(imagename, "JPEG2000",
-                         quality_mode="rates", quality_layers=quality)
+                         quality_mode = "rates", quality_layers = quality)
         print("Saving: " + imagename)
-        j2kImage = Image.open(imagename)
+        j2kImage=Image.open(imagename)
         tga_converter(j2kImage, counter, outputPrefix, exportPath)
         compressionRatio += compressionRatio
         counter += 1
@@ -78,8 +77,8 @@ def j2k_exporter(sourceImage, compressionSteps, outputPrefix, exportPath):
 ###########################################################
 # FUNKTION C: Konvertiert J2K Dateien in TGA
 def tga_converter(tgaSource, counter, outputPrefix, exportPath):
-    tgaName = exportPath + "/" + outputPrefix + str(counter) + ".tga"
-    tgaPath = tgaName
+    tgaName=exportPath + "/" + outputPrefix + str(counter) + ".tga"
+    tgaPath=tgaName
     tgaSource.save(tgaPath, "TGA")  # this converts png image as jpeg
 # ----- ENDE FUNKTION C ////
 
@@ -89,16 +88,16 @@ def tga_converter(tgaSource, counter, outputPrefix, exportPath):
 def getNextQuality(sourceImage, currentImageName, currentQuality, compressionStep):
 
     # Definiert geforderte Dateigroesse und initialisiert Variablen fuer Ober- und Untergrenze
-    goalSize = (os.path.getsize(currentImageName)/2)
-    sizeImage1 = goalSize
-    sizeImage2 = goalSize
+    goalSize=(os.path.getsize(currentImageName)/2)
+    sizeImage1=goalSize
+    sizeImage2=goalSize
 
     # Schleife die Schrittweise die Qualitaet in ganzzahligen Schritten herabsetzt bis gewuenschte Groesse erreicht ist
     # Um Dateigroessen zu bestimmen werden je die Bilder mit der aktuellen Qualitaet und der Qualitaet-1 generiert, analysiert und entfernt
-    counter = 0
+    counter=0
     while (sizeImage1 >= goalSize and sizeImage2 >= goalSize and currentQuality > 1):
 
-        cacheImageBig = sourceImage.save(
+        cacheImageBig=sourceImage.save(
             "cacheImage1.jpg", "JPEG", optimize=True, quality=currentQuality)
         cacheImageSmall = sourceImage.save(
             "cacheImage2.jpg", "JPEG", optimize=True, quality=(currentQuality-1))
