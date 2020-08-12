@@ -34,7 +34,7 @@ def jpeg_exporter(sourceImage, compressionSteps, outputPrefix, exportPath):
     quality = 100
     while (counter <= compressionSteps):
         print("Converting image to DCT-JPEG: " +
-              str(counter+1) + " / " + str(compressionSteps+1))
+              str(counter) + " / " + str(compressionSteps))
 
         imagename=exportPath + "/" + outputPrefix + "_JPG_" + str(counter) + ".jpg"
 
@@ -45,7 +45,7 @@ def jpeg_exporter(sourceImage, compressionSteps, outputPrefix, exportPath):
             quality=getNextQuality(sourceImage, imagename, quality, counter)
 
         counter += 1
-
+        
 # ----- ENDE FUNKTION A ////
 
 
@@ -58,7 +58,7 @@ def j2k_exporter(sourceImage, compressionSteps, outputPrefix, exportPath):
     compressionRatio=4
     while (counter <= compressionSteps):
         print("Converting image to JPEG2000: " +
-              str(counter+1) + " / " + str(compressionSteps+1))
+              str(counter) + " / " + str(compressionSteps))
         quality=[compressionRatio]
 
         imagename=exportPath + "/" + outputPrefix + "_J2K_" + str(counter) + ".j2k"

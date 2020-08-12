@@ -5,6 +5,14 @@
 
 # Programmiert als Teil der Hausarbeit fuer die Vorlesung:
 # Postproduction
+
+#Folgender Code um .EXE zu generieren:
+#pyinstaller  --icon=icon.ico --noconsole  --onefile --name "JPEGConverter" jpegconverterMAIN.py 
+# 
+# 
+# Fuer Bearbeitung werden folgende Packages benoetigt:
+# pip install Pillow
+
 ###########################################################
 
 import PIL.Image  # Importiert PIL Package
