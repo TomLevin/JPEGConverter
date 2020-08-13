@@ -6,12 +6,12 @@
 # Programmiert als Teil der Hausarbeit fuer die Vorlesung:
 # Postproduction
 
-#Folgender Code um .EXE zu generieren:
-#pyinstaller  --icon=icon.ico --noconsole  --onefile --name "JPEGConverter" jpegconverterMAIN.py 
+# Folgender Code um .EXE zu generieren:
+# pyinstaller  --icon=icon.ico --noconsole  --onefile --name "JPEGConverter" jpegconverterMAIN.py 
 # 
 # 
-# Fuer Bearbeitung werden folgende Packages benoetigt:
-# pip install Pillow
+# Fuer Bearbeitung und ggf. Ausfuehrung werden folgende Programme und Librarys benoetigt:
+# Python 3, Tkinter, Pillow, OpenJPEG, libjpeg
 
 ###########################################################
 
@@ -94,9 +94,8 @@ frameTopFrame.grid(column=0, row=1, pady=10, padx=10)
 
 
 def btnSourceFileClicked():
-    file = filedialog.askopenfilename(filetypes=(("Images: TGA, PNG, JPEG, JPG, TIFF", "*"), ("TGA",
-                                                                                              "*.tga"), ("PNG", "*.png*"), ("TIFF", "*.tiff*"), ("JPG", "*.jpg*"), ("JPEG", "*.jpeg*")))
-    possibleFileExtensions = [".tga", ".jpg", ".jpeg", ".tiff", ".png"]
+    file = filedialog.askopenfilename(filetypes=[("Image: TGA", "*.tga")])
+    possibleFileExtensions = [".tga"]
     if any(x in Path(file).suffix for x in possibleFileExtensions):
         global filePath
         filePath = str(file)
@@ -147,6 +146,9 @@ def btnOutputFolderClicked():
         txtOutputFolder.configure(state=DISABLED)
         global outputSelected
         outputSelected = True
+    else:
+        messagebox.showinfo(
+            'Error', 'Fehler beim Auswählen des Zielverzeichnis. Prüfe die Auswahl.')
 
 
 # Label fuer Output Ordner
@@ -204,12 +206,12 @@ frameCompressions = Frame(window)
 frameCompressions.grid(column=0, row=3, pady=15)
 
 # Anzahl an Compressions Spinbox
-lblCompAmount = Label(frameCompressions, text="Anzahl an Compressions:")
+lblCompAmount = Label(frameCompressions, text="Anzahl an Kompressionen:")
 lblCompAmount.grid(column=0, row=0)
 compAmount = IntVar()
 compAmount.set(6)
 spinCompAmount = Spinbox(frameCompressions, from_=1,
-                         to=8, width=3, textvariable=compAmount)
+                         to=6, width=3, textvariable=compAmount)
 spinCompAmount.grid(column=1, row=0)
 
 #####################################################
@@ -241,13 +243,21 @@ def btnRunConversionClicked():
         messagebox.showinfo(
             'Error', 'Zielverzeichnis muss ausgewählt werden.')
     else:
-        img = PIL.Image.open(filePath)
         prefix = txtPrefix.get()
         varProgress.set(50)
         varProgressLabel.set("Status: Läuft...")
         window.update()
-        converter.runConversion(chkShouldJ2k_state.get(
-        ), chkShouldJPEG_state.get(), img, outputPath, compAmount.get(), prefix)
+
+        #Folgende Funktion startet Umwandlungen/ Kompression – Folgende Parameter werden verwendet
+            #Boolean – Ob J2K Dateien generiert werden sollen
+            #Boolean – Ob JPG Dateien generiert werden sollen
+            #String – Pfad zum Quellbild
+            #String – Zielverzeichnis
+            #Integer – Anzahl der Kompressionsstufen
+            #String – Prefix fuer neue Dateien
+        converter.runConversion(chkShouldJ2k_state.get(),chkShouldJPEG_state.get(),
+            filePath, outputPath, compAmount.get(), prefix)
+
         varProgress.set(100)
         varProgressLabel.set("Status: Fertig!")
         messagebox.showinfo('Status', 'Konvertierung und Kompression erfolgreich!')
@@ -260,12 +270,14 @@ btnRunConversion = Button(window, width=10, text="Start",
 
 # --------------- COPYRIGHT
 
-lblFooter1 = Label(window, font="helvetica 8", text="(C) 2020: TLS - TS171")
-lblFooter2 = Label(window, font="helvetica 8",
-                   text="Programmiert für Postproduction im Sommersemester 2020")
+lblFooter1 = Label(window, font="helvetica 8", text="Realisiert mit: Python, Pillow, OpenJPEG, libjpeg & Tkinter")
+lblFooter2 = Label(window, font="helvetica 8", text="(C) 2020: TLS - TS171")
+lblFooter3 = Label(window, font="helvetica 8",
+                   text="Postproduction | Sommer 2020 | HdM Stuttgart")
 
 lblFooter1.grid()
 lblFooter2.grid()
+lblFooter3.grid()
 
 #####################################################
 
