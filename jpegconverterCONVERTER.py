@@ -1,3 +1,4 @@
+# Letzte Aenderungen vom: 14.08.2020 - 08:50
 ###########################################################
 # Diese Datei beinhaltet alle Converter-Funktionen
 #

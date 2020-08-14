@@ -1,10 +1,11 @@
+# Letzte Aenderungen vom: 14.08.2020 - 08:50
 ###########################################################
 # JPEG-Converter von Tom Levin Schwenzle
 # Konvertiert Bilddateien in JPEG2000(OpenJPEG) oder regulaeres JPEG(LibJPEG)
 # Mit abgestufter Kompression
 
-# Programmiert als Teil der Hausarbeit fuer die Vorlesung:
-# Postproduction
+# Programmiert als Teil der Hausarbeit fuer die Vorlesung
+# Postproduction an der Hochschule der Medien Stuttgart
 
 # Folgender Code um .EXE zu generieren:
 # pyinstaller  --icon=icon.ico --noconsole  --onefile --name "JPEGConverter" jpegconverterMAIN.py 
